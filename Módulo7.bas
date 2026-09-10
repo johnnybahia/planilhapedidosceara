@@ -1,4 +1,4 @@
-Attribute VB_Name = "Módulo7"
+Attribute VB_Name = "Mï¿½dulo7"
 Option Explicit
 
 Private Const WEBAPP_URL       As String = "https://script.google.com/macros/s/AKfycbyZ7d8AKxlJq0F3J1ne-GtX4hBTx8NKIHrfXe5KsrKU9FTPKac-9lNSjyZ3RAqZvPzJwA/exec"
@@ -81,6 +81,7 @@ Private Function MontarPayload(ByRef arr As Variant, ByVal sid As String, ByVal 
 End Function
 
 Private Function CelulaJson(ByVal v As Variant) As String
+    Dim s As String
     If IsError(v) Or IsEmpty(v) Or IsNull(v) Then
         CelulaJson = """"""
     ElseIf VarType(v) = vbDate Then
@@ -90,7 +91,13 @@ Private Function CelulaJson(ByVal v As Variant) As String
     ElseIf VarType(v) = vbString Then
         CelulaJson = """" & EscJson(CStr(v)) & """"
     ElseIf IsNumeric(v) Then
-        CelulaJson = Trim$(Str$(v))
+        s = Trim$(Str$(v))
+        If Left$(s, 1) = "." Then
+            s = "0" & s
+        ElseIf Left$(s, 2) = "-." Then
+            s = "-0" & Mid$(s, 2)
+        End If
+        CelulaJson = s
     Else
         CelulaJson = """" & EscJson(CStr(v)) & """"
     End If
@@ -173,7 +180,7 @@ End Function
 
 Private Function Normalizar(ByVal s As String) As String
     Dim de As String, pa As String, i As Long
-    de = "áàâãäéèêëíìîïóòôõöúùûüçÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇ"
+    de = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
     pa = "aaaaaeeeeiiiiooooouuuucAAAAAEEEEIIIIOOOOOUUUUC"
     For i = 1 To Len(de)
         s = Replace(s, Mid$(de, i, 1), Mid$(pa, i, 1))
